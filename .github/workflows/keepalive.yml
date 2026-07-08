@@ -22,7 +22,7 @@ jobs:
       - name: Ping Supabase
         if: steps.check.outputs.in_window == 'true'
         run: |
-          curl -s -o /dev/null -w "%{http_code}" \
+            curl -s -w "\nHTTP_CODE:%{http_code}" \
             "https://kykqijwwpcrirdierkil.supabase.co/rest/v1/schools?select=id&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
