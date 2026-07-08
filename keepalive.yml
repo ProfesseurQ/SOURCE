@@ -1,0 +1,28 @@
+name: Supabase Keepalive (été)
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # tous les jours à 6h UTC
+  workflow_dispatch:        # déclenchement manuel possible à tout moment
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier la fenêtre de dates
+        id: check
+        run: |
+          TODAY=$(date +%m-%d)
+          if [[ "$TODAY" > "06-30" && "$TODAY" < "09-01" ]]; then
+            echo "in_window=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "in_window=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ping Supabase
+        if: steps.check.outputs.in_window == 'true'
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            "https://kykqijwwpcrirdierkil.supabase.co/rest/v1/schools?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
