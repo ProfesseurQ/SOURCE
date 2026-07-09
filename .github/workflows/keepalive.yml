@@ -2,7 +2,7 @@ name: Supabase Keepalive (été)
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # tous les jours à 6h UTC
+    - cron: '35 6 * * *'   # tous les jours à 6h35 UTC
   workflow_dispatch:        # déclenchement manuel possible à tout moment
 
 jobs:
